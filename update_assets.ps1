@@ -1,25 +1,14 @@
-# --- Fin2Pay Assets Auto-Updater (Safe PS Version) ---
+# --- Fin2Pay Assets Auto Updater ---
+# Clean version (no emojis, no Unicode issues)
+
 $baseDir = "D:\Fin2Pay_Assets"
-$domain  = "https://assets.fin2pay.fi"
 
-Set-Location $baseDir
+# Function to generate index for each folder
+function Generate-FolderIndex {
+    param([string]$folderPath)
 
-# --- Helper: Generate index for each folder ---
-function Generate-Index($folder) {
-    $files = Get-ChildItem -Path $folder -File | Where-Object { $_.Name -ne "index.html" }
-    $htmlPath = Join-Path $folder "index.html"
-    $folderName = Split-Path $folder -Leaf
-
-    $links = ""
-    foreach ($f in $files) {
-        $links += "<li><a href='$($f.Name)' target='_blank'>$($f.Name)</a></li>`n"
-    }
-
-    $parent = Split-Path $folder -Parent
-    $backLink = ""
-    if ($parent -ne $baseDir) {
-        $backLink = "<li><a href='../'>Back to Home</a></li>"
-    }
+    $folderName = Split-Path $folderPath -Leaf
+    $files = Get-ChildItem -Path $folderPath -File
 
     $html = @"
 <!DOCTYPE html>
@@ -28,38 +17,80 @@ function Generate-Index($folder) {
   <meta charset='UTF-8'>
   <title>$folderName - Fin2Pay Assets</title>
   <style>
-    body { font-family: Segoe UI, sans-serif; background:#f8f9fb; padding:30px; }
-    h1 { color:#002855; }
-    ul { line-height:2; list-style:none; padding:0; }
-    a { color:#004aad; text-decoration:none; }
-    a:hover { text-decoration:underline; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fb;
+      text-align: center;
+      padding: 40px;
+      color: #1a1a1a;
+    }
+    h1 {
+      font-size: 2em;
+      color: #002855;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #555;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 8px 0;
+      font-size: 1.1em;
+    }
+    a {
+      color: #004aad;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      margin-top: 40px;
+      color: #666;
+      font-size: 0.9em;
+    }
   </style>
 </head>
 <body>
-  <h1>$folderName</h1>
+  <h1>$folderName Folder</h1>
+  <p>Total Files: $($files.Count)</p>
   <ul>
-  $links
-  $backLink
+"@
+
+    foreach ($f in $files) {
+        $html += "    <li><a href='$($f.Name)'>$($f.Name)</a></li>`n"
+    }
+
+    $html += @"
   </ul>
+  <footer>
+    &copy; 2025 Fin2Pay — All rights reserved.
+  </footer>
 </body>
 </html>
 "@
-    $html | Out-File -FilePath $htmlPath -Encoding UTF8
+
+    $html | Out-File -Encoding utf8 -FilePath (Join-Path $folderPath "index.html")
 }
 
-# --- Helper: Generate main index ---
+# Function to generate main index page
 function Generate-MainIndex {
     $dirs = Get-ChildItem -Path $baseDir -Directory
+
     $cards = ""
     foreach ($d in $dirs) {
         $title = switch -Regex ($d.Name.ToLower()) {
-            "logo" { "Logos" }
-            "ip" { "IP & R&D Notes" }
-            "letterhead" { "Letterhead" }
+            "logos" { "Logos" }
+            "ip_research" { "IP & R&D Notes" }
             "letters" { "Letters & Confirmations" }
-            "visit" { "Visit Card" }
+            "letterhead" { "Letterhead" }
+            "visit_card" { "Visit Card" }
             default { $d.Name }
         }
+
         $cards += "<a href='$($d.Name)/index.html' class='card'>$title</a>`n"
     }
 
@@ -71,24 +102,54 @@ function Generate-MainIndex {
   <title>Fin2Pay Assets Portal</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: #f8f9fb url('$domain/LOGO.jpg') no-repeat center center fixed;
-      background-size: 400px;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fb url('https://assets.fin2pay.fi/LOGO.jpg') no-repeat center 120px;
+      background-size: 250px;
+      margin: 0;
+      padding-top: 320px;
+      color: #1a1a1a;
       text-align: center;
     }
-    header { background: rgba(255,255,255,0.85); box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:30px; }
-    h1 { color:#002855; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; padding:40px; max-width:900px; margin:0 auto; }
-    .card {
-      background: rgba(255,255,255,0.85);
-      border-radius:16px;
-      padding:25px;
-      text-decoration:none;
-      color:#002855;
-      box-shadow:0 4px 10px rgba(0,0,0,0.05);
-      transition:transform .2s, box-shadow .2s;
+    header {
+      margin-bottom: 40px;
     }
-    .card:hover { transform:translateY(-4px); box-shadow:0 6px 15px rgba(0,0,0,0.1); }
+    h1 {
+      color: #002855;
+      font-size: 2.4em;
+      margin: 0;
+    }
+    p {
+      color: #555;
+      margin-top: 6px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      padding: 20px 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 25px;
+      text-decoration: none;
+      color: #002855;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+    footer {
+      padding: 30px;
+      margin-top: 60px;
+      color: #666;
+      font-size: 0.9em;
+    }
   </style>
 </head>
 <body>
@@ -97,32 +158,38 @@ function Generate-MainIndex {
     <p>Access organized brand and project materials securely</p>
   </header>
 
-  <section class='grid'>
+  <section class="grid">
     $cards
   </section>
 
-  <footer style='padding:20px;color:#666;'>© 2025 Fin2Pay — All rights reserved.</footer>
+  <footer>
+    &copy; 2025 Fin2Pay — All rights reserved.
+  </footer>
 </body>
 </html>
 "@
 
-    $mainHtml | Out-File -FilePath "$baseDir\index.html" -Encoding UTF8
+    $mainHtml | Out-File -Encoding utf8 -FilePath (Join-Path $baseDir "index.html")
 }
 
-Write-Host "🔄 Generating indexes..."
-# Build all subfolder indexes
+# --- Main Execution ---
+Write-Host "Generating indexes..."
 $folders = Get-ChildItem -Path $baseDir -Directory
-foreach ($f in $folders) { Generate-Index $f.FullName }
 
-# Build main index
+foreach ($folder in $folders) {
+    Generate-FolderIndex -folderPath $folder.FullName
+}
+
 Generate-MainIndex
 
-Write-Host "✅ HTML indexes generated."
-
-# Git sync and deploy
+Write-Host "Updating Git repository..."
 git add .
-git commit -m "auto update assets $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+git commit -m "Auto update $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
 git pull --rebase
 git push
 
-Write-Host "🚀 Deployment complete. Check https://assets.fin2pay.fi"
+Write-Host ""
+Write-Host "----------------------------------------------"
+Write-Host " Deployment complete!"
+Write-Host " Your site is live at: https://assets.fin2pay.fi"
+Write-Host "----------------------------------------------"
