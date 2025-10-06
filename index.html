@@ -1,2 +1,76 @@
-<h1>Fin2Pay Assets</h1>
-<p>Welcome to the Fin2Pay assets page.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fin2Pay Assets Portal</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f8f9fb url('https://assets.fin2pay.fi/LOGO.jpg') no-repeat center center fixed;
+      background-size: 400px;
+      background-blend-mode: lighten;
+      color: #1a1a1a;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 30px 10px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.2em;
+      color: #002855;
+      letter-spacing: 1px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .card {
+      background: rgba(255,255,255,0.85);
+      border-radius: 16px;
+      padding: 25px;
+      text-decoration: none;
+      color: #002855;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+      backdrop-filter: blur(5px);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+    footer {
+      font-size: 0.9em;
+      padding: 30px 0;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Fin2Pay Assets Portal</h1>
+    <p>Access organized brand and project materials securely</p>
+  </header>
+
+  <section class="grid">
+    <a href="logos/" class="card">🖼 Logos</a>
+    <a href="ip_research/" class="card">💡 IP & R&D Notes</a>
+    <a href="letters/" class="card">📄 Letters & Confirmations</a>
+    <a href="letterhead/" class="card">📃 Letterhead</a>
+    <a href="visit_card/" class="card">💼 Visit Card</a>
+  </section>
+
+  <footer>
+    &copy; 2025 Fin2Pay — All rights reserved.
+  </footer>
+</body>
+</html>
