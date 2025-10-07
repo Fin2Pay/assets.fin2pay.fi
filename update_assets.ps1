@@ -1,12 +1,12 @@
 # --- Fin2Pay Assets Auto-Indexer & Tracker (Gradient Edition) ---
 # Author: Vahid • Fin2Pay • 2025
 
-$baseDir  = "D:\Fin2Pay_Assets"
-$repoUrl  = "https://github.com/Fin2Pay/assets.fin2pay.fi.git"
-$branch   = "main"
+$baseDir   = "D:\Fin2Pay_Assets"
+$repoUrl   = "https://github.com/Fin2Pay/assets.fin2pay.fi.git"
+$branch    = "main"
 $styleFile = "style.css"
 
-# ---- HTML safe encoder (بدون نیاز به System.Web) ----
+# ---- HTML safe encoder (بدون System.Web) ----
 function HtmlEncode([string]$s){
     $s = $s -replace '&','&amp;'
     $s = $s -replace '<','&lt;'
@@ -38,7 +38,7 @@ $statScript = @"
 
 $trackingCode = "$gaScript`n$statScript"
 
-# ---- Folder index generator (sub-pages) ----
+# ---- Folder index generator (زیرصفحات) ----
 function Generate-FolderIndex {
     param ($folderPath)
 
@@ -49,7 +49,8 @@ function Generate-FolderIndex {
     $rows = ""
     $i = 1
     foreach ($f in $files) {
-        $rows += "<tr><td>$i</td><td><a href='$([HtmlEncode]($f.Name))' target='_blank'>$([HtmlEncode]($f.Name))</a></td></tr>`n"
+        $nameEncoded = $(HtmlEncode $f.Name)
+        $rows += "<tr><td>$i</td><td><a href='$nameEncoded' target='_blank'>$nameEncoded</a></td></tr>`n"
         $i++
     }
 
@@ -87,13 +88,13 @@ $rows
     [System.IO.File]::WriteAllText($out, $html, $utf8NoBom)
 }
 
-# ---- Main portal generator (home page) ----
+# ---- Main portal generator (صفحه اصلی) ----
 function Generate-MainIndex {
     $dirs = Get-ChildItem -Path $baseDir -Directory
     $cards = ""
     foreach ($d in $dirs) {
-        $nameEsc = HtmlEncode $d.Name
-        $cards += "<a href='$($d.Name)/index.html' class='card'>$nameEsc</a>`n"
+        $nameEsc = $(HtmlEncode $d.Name)
+        $cards  += "<a href='$($d.Name)/index.html' class='card'>$nameEsc</a>`n"
     }
 
     $html = @"
@@ -135,6 +136,7 @@ Generate-MainIndex
 Set-Location $baseDir
 git add .
 git commit -m "auto update assets"
+git fetch origin --prune
 git pull origin $branch --rebase
 git push origin $branch
 Write-Host "Deployment complete. Visit https://assets.fin2pay.fi"
