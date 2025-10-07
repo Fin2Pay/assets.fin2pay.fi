@@ -1,43 +1,41 @@
-/* --- Fin2Pay Official Portal Dark Theme (Refined No-Bars Edition) --- */
-/* Colors: #002855 (dark blue), #00ADEF (light blue), #00C48C (green-blue) */
+/* --- Fin2Pay Dark Corporate Theme (final fix) --- */
+/* Brand colors: #002855 (dark), #00ADEF (light blue), #00C48C (green) */
 
 body {
   font-family: 'Segoe UI', Tahoma, sans-serif;
-  background: radial-gradient(circle at top left, #002855 0%, #001a33 100%) fixed;
-  color: #f1f1f1;
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  color: #f1f1f1;
+  background: #0a0f18; /* حذف مستطیل آبی */
   background-image:
-    radial-gradient(circle at top left, rgba(0, 40, 85, 0.95), rgba(0, 26, 51, 0.95)),
+    radial-gradient(circle at top left, rgba(0, 40, 85, 0.8), rgba(0, 26, 51, 0.8)),
     url('LOGO.jpg');
   background-repeat: no-repeat;
-  background-position: center 60%;
-  background-size: 50%;
+  background-position: center 70%;
+  background-size: 45%;
   background-blend-mode: overlay;
+  min-height: 100vh;
 }
 
-/* Header (main + sub) */
+/* ✅ Header اصلی با گرادیان برند */
 header, .sub-header {
-  background: none !important; /* ✅ حذف رنگ پس‌زمینه */
+  background: linear-gradient(90deg, #00ADEF, #00C48C);
   color: #fff;
   text-align: center;
-  padding: 35px 15px 15px 15px;
+  padding: 35px 15px 25px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
 }
 
-header h1 {
+header h1, .sub-header {
   margin: 0;
   font-size: 2.2em;
-  background: linear-gradient(90deg, #00ADEF, #00C48C);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
 header p {
-  margin: 8px 0 0;
+  margin-top: 8px;
   font-size: 1em;
   opacity: 0.9;
 }
@@ -53,79 +51,74 @@ header p {
 }
 
 .card {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 14px;
   padding: 25px;
   text-decoration: none;
   color: #e0faff;
   font-weight: 500;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   transition: 0.25s;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(4px);
 }
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.6);
   background: linear-gradient(135deg, #00ADEF, #00C48C);
-  color: white;
+  color: #fff;
 }
 
-/* Table area (sub pages) */
+/* ✅ جدول فایل‌ها */
 .table-area {
   margin: 60px auto;
   width: 85%;
   max-width: 900px;
 }
-
 table {
   width: 100%;
   border-collapse: collapse;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.04);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
-
 th, td {
   padding: 14px 18px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
-
 th {
   background: linear-gradient(90deg, #00ADEF, #00C48C);
   color: #fff;
   text-align: left;
   font-weight: 600;
 }
-
 td {
   color: #d6eaff;
 }
-
 tr:hover td {
   background: rgba(0,173,239,0.15);
 }
 
+/* Links */
 a {
   color: #00C48C;
   text-decoration: none;
   font-weight: 500;
 }
-
 a:hover {
   color: #00ADEF;
   text-decoration: underline;
 }
 
-/* Footer */
+/* ✅ Footer مینیمال بدون پس‌زمینه آبی */
 footer {
-  background: none !important; /* ✅ حذف بک‌گراند تیره */
+  background: transparent;
   color: #b3d8ff;
   font-size: 0.9em;
   padding: 25px 0 10px 0;
   text-align: center;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  text-shadow: 0 2px 5px rgba(0,0,0,0.4);
   border: none;
   position: relative;
 }
