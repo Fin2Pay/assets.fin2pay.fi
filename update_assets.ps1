@@ -56,7 +56,7 @@ function Generate-FolderIndex {
 <link rel="stylesheet" href="../$styleFile">
 $trackingCode
 </head>
-<body>
+<body class="with-watermark">
 <header class="sub-header">$folderName Folder</header>
 <main class="table-area">
 <table>
@@ -66,7 +66,7 @@ $rows
 </tbody>
 </table>
 </main>
-<footer>© 2025 Fin2Pay — All rights reserved.</footer>
+<footer>&copy; 2025 Fin2Pay &mdash; All rights reserved.</footer>
 </body>
 </html>
 "@
@@ -91,7 +91,7 @@ function Generate-MainIndex {
 <link rel="stylesheet" href="$styleFile">
 $trackingCode
 </head>
-<body>
+<body class="no-watermark">
 <header>
   <h1>Fin2Pay Assets Portal</h1>
   <p>Access organized brand and project materials securely</p>
@@ -99,7 +99,13 @@ $trackingCode
 <section class='grid'>
   $cards
 </section>
-<footer>© 2025 Fin2Pay — All rights reserved.</footer>
+
+<!-- Logo below the cards -->
+<section class="logo-section">
+  <img src="https://assets.fin2pay.fi/LOGO.jpg" alt="Fin2Pay Logo" loading="lazy" />
+</section>
+
+<footer>&copy; 2025 Fin2Pay &mdash; All rights reserved.</footer>
 </body>
 </html>
 "@
