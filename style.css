@@ -9,7 +9,7 @@
   --hover-grad: linear-gradient(145deg, #00ADEF, #00C48C);
 }
 
-*{box-sizing:border-box}
+*{ box-sizing:border-box }
 
 body{
   font-family:'Segoe UI', Tahoma, sans-serif;
@@ -20,7 +20,7 @@ body{
   display:flex; flex-direction:column;
 }
 
-/* Header / Sub-header */
+/* ---------- Header ---------- */
 header, .sub-header{
   background: linear-gradient(90deg, var(--brand-aqua), var(--brand-green));
   color:#fff; text-align:center;
@@ -30,7 +30,7 @@ header, .sub-header{
 header h1{ margin:0; font-size:2.2em }
 header p{ margin-top:8px; font-size:1em; opacity:.95 }
 
-/* Single-row cards with horizontal scroll */
+/* ---------- Single-row Card Rail (horizontal scroll) ---------- */
 .grid{
   display:flex; flex-wrap:nowrap;
   gap:22px;
@@ -46,12 +46,15 @@ header p{ margin-top:8px; font-size:1em; opacity:.95 }
   border-radius:6px;
 }
 
-/* Cards */
+/* ---------- Cards (smaller: ~40% narrower, ~60% shorter) ---------- */
 .card{
-  flex:0 0 clamp(180px, 22vw, 240px); /* اندازه‌ی منعطف */
-  aspect-ratio:5 / 4;                 /* ارتفاع جمع‌وجورتر */
-  scroll-snap-align:start;
+  /* عرض منعطف، ~40٪ کمتر از نسخه‌ی قبل */
+  flex: 0 0 clamp(110px, 13vw, 160px);
 
+  /* ارتفاع کم‌تر (بسیار فلت‌تر)؛ در صورت تمایل 5/3 را امتحان کن */
+  aspect-ratio: 25 / 8;
+
+  scroll-snap-align:start;
   background:var(--card-grad);
   border:1px solid rgba(0,173,239,.30);
   border-radius:14px;
@@ -68,33 +71,51 @@ header p{ margin-top:8px; font-size:1em; opacity:.95 }
   box-shadow:0 6px 16px rgba(0,0,0,.20);
 }
 
-/* Logo under cards (فقط صفحه‌ی اصلی) */
+/* ---------- Logo under cards (if needed on main page HTML) ---------- */
 .logo-section{ text-align:center; margin:34px 0 12px }
 .logo-section img{ width:230px; opacity:.95; transition:opacity .6s ease }
 .logo-section img:hover{ opacity:1 }
 
-/* Watermark برای صفحات پوشه‌ها */
+/* ---------- Watermarks ---------- */
+/* واترمارک فقط برای صفحه‌ی اصلی (بدون کلاس with-watermark) */
+body:not(.with-watermark)::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  background: url('logos/logos.png') no-repeat center 60% / 35%;
+  opacity: .10;
+  pointer-events: none;
+}
+
+/* واترمارک برای صفحات پوشه‌ها (وقتی body کلاس with-watermark دارد) */
 body.with-watermark::before{
-  content:""; position:fixed; inset:0;
-  background:url('../LOGO.jpg') no-repeat center 60% / 820px;
+  content:"";
+  position: fixed; inset:0;
+  background: url('../logos/logos.png') no-repeat center 60% / 820px;
   opacity:.10; pointer-events:none;
 }
 
-/* Table pages (لیست فایل‌ها) */
+/* ---------- Folder Tables ---------- */
 .table-area{ margin:46px auto 0; width:88%; max-width:900px }
-table{ width:100%; border-collapse:collapse; background:rgba(0,173,239,.05);
-  border-radius:12px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,.10) }
+table{
+  width:100%; border-collapse:collapse;
+  background:rgba(0,173,239,.05);
+  border-radius:12px; overflow:hidden;
+  box-shadow:0 4px 12px rgba(0,0,0,.10)
+}
 th,td{ padding:14px 18px; border-bottom:1px solid rgba(0,0,0,.05) }
-th{ background:linear-gradient(90deg, var(--brand-aqua), var(--brand-green));
-  color:#fff; text-align:left; font-weight:600 }
+th{
+  background:linear-gradient(90deg, var(--brand-aqua), var(--brand-green));
+  color:#fff; text-align:left; font-weight:600
+}
 td{ color:#003a55 }
 tr:hover td{ background:rgba(0,173,239,.10) }
 
-/* Links */
+/* ---------- Links ---------- */
 a{ color:var(--brand-aqua); text-decoration:none }
 a:hover{ color:var(--brand-green); text-decoration:underline }
 
-/* Footer */
+/* ---------- Footer ---------- */
 footer{
   background:transparent; color:#004a66;
   font-size:.9em; padding:14px 0 18px;
