@@ -1,210 +1,183 @@
-# ============================
-#  Fin2Pay Assets Auto Builder
-# ============================
+# --- Fin2Pay Assets Auto-Indexer & Deployer ---
+# Creates/updates index.html for each folder and main site
+# Automatically includes Google Analytics tracking code
+# Vahid • Fin2Pay • 2025
 
 $baseDir = "D:\Fin2Pay_Assets"
-$logoPath = "https://assets.fin2pay.fi/LOGO.jpg"
+$repoUrl = "https://github.com/Fin2Pay/assets.fin2pay.fi.git"
+$gaID = "G-ZLL26PB1Q5"
+$mainLogo = "LOGO.jpg"
+$remoteName = "origin"
+$branch = "main"
 
-# Helper function: escape HTML
-function Escape-HTML {
-    param([string]$Text)
-    return $Text -replace '&','&amp;' -replace '<','&lt;' -replace '>','&gt;'
+# --- Google Analytics Script ---
+$gaScript = @"
+<script async src="https://www.googletagmanager.com/gtag/js?id=$gaID"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '$gaID');
+</script>
+"@
+
+function Generate-FolderIndex {
+    param ($folderPath)
+
+    $folderName = Split-Path $folderPath -Leaf
+    $files = Get-ChildItem -Path $folderPath -File | Where-Object { $_.Name -ne "index.html" }
+    $fileList = ""
+    $counter = 1
+
+    foreach ($file in $files) {
+        $fileList += "<li>$counter - <a href='$($file.Name)'>$($file.Name)</a></li>`n"
+        $counter++
+    }
+
+    $total = $files.Count
+    $html = @"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>$folderName - Fin2Pay Assets</title>
+$gaScript
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #f8f9fb url('../$mainLogo') no-repeat center center fixed;
+  background-size: 600px;
+  background-blend-mode: lighten;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  color: #002855;
+  margin-top: 120px;
+  font-size: 2.2em;
+}
+ul { list-style: none; padding: 0; }
+a { color: #004aad; text-decoration: none; }
+a:hover { text-decoration: underline; }
+footer {
+  font-size: 0.9em;
+  padding: 30px 0;
+  color: #666;
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+}
+</style>
+</head>
+<body>
+<h1>$folderName Folder</h1>
+<p>Total Files: $total</p>
+<ul>$fileList</ul>
+<footer>© 2025 Fin2Pay — All rights reserved.</footer>
+</body>
+</html>
+"@
+
+    $html | Out-File -Encoding UTF8 -FilePath (Join-Path $folderPath "index.html")
 }
 
-# Generate folder index.html
-function Generate-FolderIndex {
-    param([string]$folderPath)
-    $folderName = Split-Path $folderPath -Leaf
-    $files = Get-ChildItem -Path $folderPath -File | Sort-Object Name
+function Generate-MainIndex {
+    $dirs = Get-ChildItem -Path $baseDir -Directory
+    $cards = ""
 
-    $fileCount = $files.Count
-    $fileLinks = ""
-    $i = 1
-    foreach ($f in $files) {
-        $fileName = Escape-HTML $f.Name
-        $fileLinks += "<li><a href='$fileName'>$i - $fileName</a></li>`n"
-        $i++
+    foreach ($d in $dirs) {
+        $name = $d.Name
+        $cards += "<a href='$name/index.html' class='card'>$name</a>`n"
     }
 
     $html = @"
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>$folderName - Fin2Pay Assets</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: #f8f9fb url('$logoPath') no-repeat center center fixed;
-      background-size: 700px;
-      opacity: 0.97;
-      text-align: center;
-      color: #0b2c52;
-      margin: 0;
-      padding: 0;
-    }
-    h1 {
-      margin-top: 100px;
-      font-size: 2.2em;
-      font-weight: 700;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-      font-size: 1.1em;
-      line-height: 1.8em;
-    }
-    a {
-      color: #0046a6;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    footer {
-      position: fixed;
-      bottom: 20px;
-      width: 100%;
-      text-align: center;
-      color: #666;
-      font-size: 0.9em;
-    }
-  </style>
-</head>
-<body>
-  <h1>${folderName} Folder</h1>
-  <p>Total Files: $fileCount</p>
-  <ul>
-  $fileLinks
-  </ul>
-  <footer>© 2025 Fin2Pay — All rights reserved.</footer>
-</body>
-</html>
-"@
-
-    $html | Out-File -FilePath (Join-Path $folderPath "index.html") -Encoding utf8
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fin2Pay Assets Portal</title>
+$gaScript
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #f8f9fb url('$mainLogo') no-repeat center center fixed;
+  background-size: 800px;
+  background-blend-mode: lighten;
+  color: #1a1a1a;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
-
-# Generate main index.html
-function Generate-MainIndex {
-    $dirs = Get-ChildItem -Path $baseDir -Directory | Sort-Object Name
-
-    $cards = ""
-    foreach ($d in $dirs) {
-        $name = $d.Name
-        $title = switch -Regex ($name.ToLower()) {
-            "logos"        { "Logos" }
-            "ip_research"  { "IP & R&D Notes" }
-            "letters"      { "Letters & Confirmations" }
-            "letterhead"   { "Letterhead" }
-            "visit_card"   { "Visit Card" }
-            default        { $name }
-        }
-
-        $cards += "<a href='$($d.Name)/index.html' class='card'>$title</a>`n"
-    }
-
-    $mainHtml = @"
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fin2Pay Assets Portal</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: #f8f9fb url('$logoPath') no-repeat center center fixed;
-      background-size: 900px;
-      background-blend-mode: lighten;
-      color: #0b2c52;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: rgba(255,255,255,0.9);
-      padding: 40px 10px 25px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    h1 {
-      margin: 0;
-      font-size: 2.4em;
-      font-weight: 700;
-    }
-    p {
-      margin: 10px 0 0;
-      color: #333;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      padding: 50px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .card {
-      background: rgba(255,255,255,0.85);
-      border-radius: 16px;
-      padding: 25px;
-      text-decoration: none;
-      color: #0b2c52;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      transition: transform 0.2s, box-shadow 0.2s;
-      backdrop-filter: blur(6px);
-      font-weight: 500;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    footer {
-      font-size: 0.9em;
-      padding: 20px 0;
-      color: #666;
-      position: fixed;
-      bottom: 10px;
-      width: 100%;
-      background: transparent;
-    }
-  </style>
+header {
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 30px 10px;
+}
+h1 {
+  margin: 0;
+  font-size: 2.4em;
+  color: #002855;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.card {
+  background: rgba(255,255,255,0.9);
+  border-radius: 16px;
+  padding: 25px;
+  text-decoration: none;
+  color: #002855;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+footer {
+  font-size: 0.9em;
+  padding: 30px 0;
+  color: #666;
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Fin2Pay Assets Portal</h1>
-    <p>Access organized brand and project materials securely</p>
-  </header>
-  <section class="grid">
+<header>
+  <h1>Fin2Pay Assets Portal</h1>
+  <p>Access organized brand and project materials securely</p>
+</header>
+<section class='grid'>
   $cards
-  </section>
-  <footer>© 2025 Fin2Pay — All rights reserved.</footer>
+</section>
+<footer>© 2025 Fin2Pay — All rights reserved.</footer>
 </body>
 </html>
 "@
 
-    $mainHtml | Out-File -FilePath (Join-Path $baseDir "index.html") -Encoding utf8
+    $html | Out-File -Encoding UTF8 -FilePath (Join-Path $baseDir "index.html")
 }
 
-# --- Main Process ---
-Write-Host "Updating Fin2Pay Assets Portal..."
+# --- Run build ---
+Write-Host "Generating folder indexes..."
 $folders = Get-ChildItem -Path $baseDir -Directory
-foreach ($f in $folders) {
-    Generate-FolderIndex $f.FullName
-}
+foreach ($f in $folders) { Generate-FolderIndex $f.FullName }
 Generate-MainIndex
 
-# Git sync
-Write-Host "Committing changes..."
+# --- Commit and push ---
 Set-Location $baseDir
 git add .
-git commit -m "Auto update $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" | Out-Null
-git pull --rebase
-git push
-
-Write-Host ""
-Write-Host "----------------------------------------------"
-Write-Host " Deployment complete!"
-Write-Host " Your site is live at: https://assets.fin2pay.fi"
-Write-Host "----------------------------------------------"
+git commit -m "auto update assets"
+git pull origin $branch --rebase
+git push origin $branch
+Write-Host "✅ Deployment complete. Visit https://assets.fin2pay.fi"
