@@ -1,5 +1,5 @@
-/* --- Fin2Pay Final Adaptive Portal --- */
-/* Brand: #002855, #00ADEF, #00C48C */
+/* --- Fin2Pay Final Adaptive Portal ---
+   Brand: #002855, #00ADEF, #00C48C  */
 
 :root{
   --brand-dark: #002855;
@@ -7,6 +7,7 @@
   --brand-green:#00C48C;
   --card-grad: linear-gradient(145deg, rgba(0,173,239,.25), rgba(0,196,140,.30));
   --hover-grad: linear-gradient(145deg, #00ADEF, #00C48C);
+  --wm: url('https://assets.fin2pay.fi/LOGO.jpg'); /* واترمارک: لوگوی اصلی */
 }
 
 *{ box-sizing:border-box }
@@ -46,12 +47,15 @@ header p{ margin-top:8px; font-size:1em; opacity:.95 }
   border-radius:6px;
 }
 
-/* ---------- Cards (smaller: ~40% narrower, ~60% shorter) ---------- */
+/* ---------- Cards (کوچک‌تر) ---------- */
 .card{
-  flex: 0 0 clamp(110px, 13vw, 160px); /* عرض منعطف */
-  aspect-ratio: 25 / 8;                /* ارتفاع کم‌تر؛ در صورت تمایل 5/3 هم خوبه */
-  scroll-snap-align:start;
+  /* عرض منعطف (جمع‌وجورتر) */
+  flex: 0 0 clamp(110px, 13vw, 160px);
 
+  /* ارتفاع فلت‌تر */
+  aspect-ratio: 25 / 8;
+
+  scroll-snap-align:start;
   background:var(--card-grad);
   border:1px solid rgba(0,173,239,.30);
   border-radius:14px;
@@ -68,36 +72,21 @@ header p{ margin-top:8px; font-size:1em; opacity:.95 }
   box-shadow:0 6px 16px rgba(0,0,0,.20);
 }
 
-/* ---------- Logo under cards (visible image) ---------- */
-.logo-section{
-  text-align:center;
-  margin:34px 0 12px;
-}
+/* ---------- Logo under cards (لوگوی قابل‌مشاهده) ---------- */
+.logo-section{ text-align:center; margin:34px 0 12px }
 .logo-section img{
-  width:230px;
-  max-width:46vw;
-  height:auto;
-  opacity:.98;
+  width:230px; max-width:46vw; height:auto; opacity:.98;
 }
 
-/* ---------- Watermarks ---------- */
-/* واترمارک فقط برای صفحه‌ی اصلی اگر کلاس no-watermark ست نشده باشد */
-body:not(.with-watermark):not(.no-watermark)::before{
-  content:"";
-  position: fixed; inset: 0;
-  background: url('logos/logos.png') no-repeat center 60% / 35%;
-  opacity: .10; pointer-events: none;
-}
-/* خاموش کردن واترمارک در صفحه‌ی اصلی */
-body.no-watermark::before{ display:none !important }
-
-/* واترمارک برای صفحات پوشه‌ها */
+/* ---------- Watermark ONLY on sub pages ---------- */
 body.with-watermark::before{
-  content:"";
-  position: fixed; inset:0;
-  background: url('../logos/logos.png') no-repeat center 60% / 820px;
+  content:""; position:fixed; inset:0;
+  background: var(--wm) no-repeat center 58% / 720px;
   opacity:.10; pointer-events:none;
 }
+@media (min-width:1400px){ body.with-watermark::before{ background-size:820px } }
+@media (max-width:992px){  body.with-watermark::before{ background-size:60vw } }
+@media (max-width:576px){  body.with-watermark::before{ background-size:68vw } }
 
 /* ---------- Folder Tables ---------- */
 .table-area{ margin:46px auto 0; width:88%; max-width:900px }
