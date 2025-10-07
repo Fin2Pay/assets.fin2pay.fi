@@ -2,10 +2,9 @@
 # Generates modern index.html files for all folders with Analytics + StatCounter
 # Author: Vahid • Fin2Pay • 2025
 
-$baseDir = "D:\Fin2Pay_Assets"
-$repoUrl = "https://github.com/Fin2Pay/assets.fin2pay.fi.git"
-$branch = "main"
-$mainLogo = "LOGO.jpg"
+$baseDir  = "D:\Fin2Pay_Assets"
+$repoUrl  = "https://github.com/Fin2Pay/assets.fin2pay.fi.git"
+$branch   = "main"
 $styleFile = "style.css"
 
 # --- Google Analytics ---
@@ -33,12 +32,13 @@ var sc_security="f472620b";
 
 $trackingCode = "$gaScript`n$statScript"
 
-# --- Generate folder index ---
+# --- Generate folder index (sub pages) ---
 function Generate-FolderIndex {
     param ($folderPath)
 
     $folderName = Split-Path $folderPath -Leaf
     $files = Get-ChildItem -Path $folderPath -File | Where-Object { $_.Name -notmatch '^(index\.html|style\.css)$' }
+
     $rows = ""
     $i = 1
     foreach ($f in $files) {
@@ -58,22 +58,30 @@ $trackingCode
 </head>
 <body class="with-watermark">
 <header class="sub-header">$folderName Folder</header>
+
 <main class="table-area">
-<table>
-<thead><tr><th>#</th><th>File Name</th></tr></thead>
-<tbody>
+  <table>
+    <thead><tr><th>#</th><th>File Name</th></tr></thead>
+    <tbody>
 $rows
-</tbody>
-</table>
+    </tbody>
+  </table>
 </main>
-<footer>&copy; 2025 Fin2Pay &mdash; All rights reserved.</footer>
+
+<!-- ✅ لوگوی ثابت با آدرس مطلق -->
+<section class="logo-section" style="margin-top:24px;">
+  <img src="https://assets.fin2pay.fi/LOGO.jpg" alt="Fin2Pay Logo" />
+</section>
+
+<footer>© 2025 Fin2Pay — All rights reserved.</footer>
 </body>
 </html>
 "@
+
     $html | Out-File -Encoding UTF8 -FilePath (Join-Path $folderPath "index.html")
 }
 
-# --- Generate main index ---
+# --- Generate main index (home) ---
 function Generate-MainIndex {
     $dirs = Get-ChildItem -Path $baseDir -Directory
     $cards = ""
@@ -91,24 +99,26 @@ function Generate-MainIndex {
 <link rel="stylesheet" href="$styleFile">
 $trackingCode
 </head>
-<body class="no-watermark">
+<body>
 <header>
   <h1>Fin2Pay Assets Portal</h1>
   <p>Access organized brand and project materials securely</p>
 </header>
-<section class='grid'>
-  $cards
+
+<section class="grid">
+$cards
 </section>
 
-<!-- Logo below the cards -->
+<!-- ✅ لوگوی ثابت با آدرس مطلق -->
 <section class="logo-section">
-  <img src="https://assets.fin2pay.fi/LOGO.jpg" alt="Fin2Pay Logo" loading="lazy" />
+  <img src="https://assets.fin2pay.fi/LOGO.jpg" alt="Fin2Pay Logo" />
 </section>
 
-<footer>&copy; 2025 Fin2Pay &mdash; All rights reserved.</footer>
+<footer>© 2025 Fin2Pay — All rights reserved.</footer>
 </body>
 </html>
 "@
+
     $html | Out-File -Encoding UTF8 -FilePath "$baseDir\index.html"
 }
 
