@@ -48,13 +48,10 @@ header p{ margin-top:8px; font-size:1em; opacity:.95 }
 
 /* ---------- Cards (smaller: ~40% narrower, ~60% shorter) ---------- */
 .card{
-  /* عرض منعطف، ~40٪ کمتر از نسخه‌ی قبل */
-  flex: 0 0 clamp(110px, 13vw, 160px);
-
-  /* ارتفاع کم‌تر (بسیار فلت‌تر)؛ در صورت تمایل 5/3 را امتحان کن */
-  aspect-ratio: 25 / 8;
-
+  flex: 0 0 clamp(110px, 13vw, 160px); /* عرض منعطف */
+  aspect-ratio: 25 / 8;                /* ارتفاع کم‌تر؛ در صورت تمایل 5/3 هم خوبه */
   scroll-snap-align:start;
+
   background:var(--card-grad);
   border:1px solid rgba(0,173,239,.30);
   border-radius:14px;
@@ -71,23 +68,30 @@ header p{ margin-top:8px; font-size:1em; opacity:.95 }
   box-shadow:0 6px 16px rgba(0,0,0,.20);
 }
 
-/* ---------- Logo under cards (if needed on main page HTML) ---------- */
-.logo-section{ text-align:center; margin:34px 0 12px }
-.logo-section img{ width:230px; opacity:.95; transition:opacity .6s ease }
-.logo-section img:hover{ opacity:1 }
-
-/* ---------- Watermarks ---------- */
-/* واترمارک فقط برای صفحه‌ی اصلی (بدون کلاس with-watermark) */
-body:not(.with-watermark)::before{
-  content:"";
-  position: fixed;
-  inset: 0;
-  background: url('logos/logos.png') no-repeat center 60% / 35%;
-  opacity: .10;
-  pointer-events: none;
+/* ---------- Logo under cards (visible image) ---------- */
+.logo-section{
+  text-align:center;
+  margin:34px 0 12px;
+}
+.logo-section img{
+  width:230px;
+  max-width:46vw;
+  height:auto;
+  opacity:.98;
 }
 
-/* واترمارک برای صفحات پوشه‌ها (وقتی body کلاس with-watermark دارد) */
+/* ---------- Watermarks ---------- */
+/* واترمارک فقط برای صفحه‌ی اصلی اگر کلاس no-watermark ست نشده باشد */
+body:not(.with-watermark):not(.no-watermark)::before{
+  content:"";
+  position: fixed; inset: 0;
+  background: url('logos/logos.png') no-repeat center 60% / 35%;
+  opacity: .10; pointer-events: none;
+}
+/* خاموش کردن واترمارک در صفحه‌ی اصلی */
+body.no-watermark::before{ display:none !important }
+
+/* واترمارک برای صفحات پوشه‌ها */
 body.with-watermark::before{
   content:"";
   position: fixed; inset:0;
