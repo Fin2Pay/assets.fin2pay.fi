@@ -1,5 +1,5 @@
-/* --- Fin2Pay Final Corporate Style --- */
-/* Brand colors: #002855 (dark), #00ADEF (light blue), #00C48C (green) */
+/* --- Fin2Pay Final Polished Corporate Style --- */
+/* Brand colors: #002855, #00ADEF, #00C48C */
 
 body {
   font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -7,11 +7,6 @@ body {
   padding: 0;
   color: #1a1a1a;
   background: #ffffff;
-  background-image: url('LOGO.jpg');
-  background-repeat: no-repeat;
-  background-position: center 75%; /* 👇 لوگو پایین‌تر */
-  background-size: 500px;
-  background-blend-mode: lighten;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -37,37 +32,47 @@ header p {
   opacity: 0.9;
 }
 
-/* ✅ Grid of cards */
+/* ✅ Grid smaller cards */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 25px;
-  padding: 60px 40px;
-  max-width: 900px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* کوچکتر شد */
+  gap: 20px;
+  padding: 40px 30px;
+  max-width: 800px;
   margin: 0 auto;
   flex: 1;
 }
 
 .card {
-  background: linear-gradient(145deg, rgba(0,173,239,0.2), rgba(0,196,140,0.25));
+  background: linear-gradient(145deg, rgba(0,173,239,0.25), rgba(0,196,140,0.3));
   border: 1px solid rgba(0,173,239,0.3);
   border-radius: 14px;
-  padding: 25px;
+  padding: 20px;
   text-decoration: none;
   color: #004a66;
   font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
   transition: all 0.3s ease;
   text-align: center;
 }
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   background: linear-gradient(145deg, #00ADEF, #00C48C);
   color: #fff;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
-/* ✅ Table view (subfolders) */
+/* ✅ Logo under cards */
+.logo-section {
+  text-align: center;
+  margin: 40px 0 10px;
+}
+.logo-section img {
+  width: 260px;
+  opacity: 0.95;
+}
+
+/* ✅ Table (subfolders) */
 .table-area {
   margin: 60px auto;
   width: 85%;
@@ -108,7 +113,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* ✅ Footer pinned to bottom */
+/* ✅ Footer pinned */
 footer {
   background: transparent;
   color: #004a66;
