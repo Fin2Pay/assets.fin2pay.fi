@@ -1,14 +1,14 @@
-# --- Fin2Pay Assets Auto-Indexer & Deployer ---
-# Creates/updates index.html for each folder and main site
-# Automatically includes Google Analytics tracking code
-# Vahid • Fin2Pay • 2025
+# --- Fin2Pay Assets Auto-Indexer & Tracker ---
+# Generates index.html for all folders and adds Google Analytics + StatCounter
+# Author: Vahid • Fin2Pay • 2025
 
 $baseDir = "D:\Fin2Pay_Assets"
 $repoUrl = "https://github.com/Fin2Pay/assets.fin2pay.fi.git"
-$gaID = "G-ZLL26PB1Q5"
-$mainLogo = "LOGO.jpg"
-$remoteName = "origin"
 $branch = "main"
+$mainLogo = "LOGO.jpg"
+
+# --- Google Analytics ID ---
+$gaID = "G-ZLL26PB1Q5"
 
 # --- Google Analytics Script ---
 $gaScript = @"
@@ -21,6 +21,26 @@ gtag('config', '$gaID');
 </script>
 "@
 
+# --- StatCounter Script ---
+$statCounter = @"
+<!-- Default Statcounter code for assets_fin2pay https://assets.fin2pay.fi/ -->
+<script type="text/javascript">
+var sc_project=13173824; 
+var sc_invisible=1; 
+var sc_security="f472620b"; 
+</script>
+<script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+<noscript><div class="statcounter"><a title="Web Analytics"
+href="https://statcounter.com/" target="_blank"><img class="statcounter"
+src="https://c.statcounter.com/13173824/0/f472620b/1/" alt="Web Analytics"
+referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+<!-- End of Statcounter Code -->
+"@
+
+# --- Combined Tracking Scripts ---
+$trackingCode = "$gaScript`n$statCounter"
+
+# --- Folder Page Generator ---
 function Generate-FolderIndex {
     param ($folderPath)
 
@@ -42,13 +62,14 @@ function Generate-FolderIndex {
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>$folderName - Fin2Pay Assets</title>
-$gaScript
+$trackingCode
 <style>
 body {
   font-family: 'Segoe UI', Tahoma, sans-serif;
   background: #f8f9fb url('../$mainLogo') no-repeat center center fixed;
-  background-size: 600px;
+  background-size: 800px;
   background-blend-mode: lighten;
+  opacity: 0.95;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -83,13 +104,13 @@ footer {
     $html | Out-File -Encoding UTF8 -FilePath (Join-Path $folderPath "index.html")
 }
 
+# --- Main Portal Generator ---
 function Generate-MainIndex {
     $dirs = Get-ChildItem -Path $baseDir -Directory
     $cards = ""
 
     foreach ($d in $dirs) {
-        $name = $d.Name
-        $cards += "<a href='$name/index.html' class='card'>$name</a>`n"
+        $cards += "<a href='$($d.Name)/index.html' class='card'>$($d.Name)</a>`n"
     }
 
     $html = @"
@@ -99,13 +120,14 @@ function Generate-MainIndex {
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Fin2Pay Assets Portal</title>
-$gaScript
+$trackingCode
 <style>
 body {
   font-family: 'Segoe UI', Tahoma, sans-serif;
   background: #f8f9fb url('$mainLogo') no-repeat center center fixed;
-  background-size: 800px;
+  background-size: 1000px;
   background-blend-mode: lighten;
+  opacity: 0.95;
   color: #1a1a1a;
   text-align: center;
   margin: 0;
@@ -174,7 +196,7 @@ $folders = Get-ChildItem -Path $baseDir -Directory
 foreach ($f in $folders) { Generate-FolderIndex $f.FullName }
 Generate-MainIndex
 
-# --- Commit and push ---
+# --- Git push ---
 Set-Location $baseDir
 git add .
 git commit -m "auto update assets"
