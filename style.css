@@ -1,0 +1,113 @@
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: linear-gradient(135deg, #0072ff, #00c6ff) fixed, url('LOGO.jpg') no-repeat center center fixed;
+  background-size: 40%, cover;
+  background-blend-mode: lighten;
+  color: #0a2a43;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+header {
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 40px 10px;
+  border-bottom: 4px solid #00b3ff;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.4em;
+  color: #002855;
+}
+
+p {
+  margin: 10px 0 0;
+  color: #333;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 50px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  background: rgba(255,255,255,0.9);
+  border-radius: 16px;
+  padding: 25px;
+  text-decoration: none;
+  color: #002855;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: 0.25s;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+.sub-header {
+  background: linear-gradient(135deg, #0072ff, #00c6ff);
+  color: white;
+  font-size: 1.5em;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.table-area {
+  margin: 60px auto;
+  width: 80%;
+  max-width: 800px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background: #0072ff;
+  color: white;
+  text-align: left;
+}
+
+tr:hover td {
+  background: #f0faff;
+}
+
+a {
+  color: #0072ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  background: rgba(255,255,255,0.9);
+  padding: 15px 0;
+  color: #444;
+  font-size: 0.9em;
+  border-top: 1px solid #ddd;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
