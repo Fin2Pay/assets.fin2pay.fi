@@ -1,16 +1,15 @@
-/* --- Fin2Pay Final Adaptive Portal ---
-   Brand: #002855, #00ADEF, #00C48C  */
+/* --- Fin2Pay Final Adaptive Portal --- */
+/* Brand: #002855, #00ADEF, #00C48C */
 
 :root{
-  --brand-dark: #002855;
-  --brand-aqua: #00ADEF;
+  --brand-dark:#002855;
+  --brand-aqua:#00ADEF;
   --brand-green:#00C48C;
-  --card-grad: linear-gradient(145deg, rgba(0,173,239,.25), rgba(0,196,140,.30));
-  --hover-grad: linear-gradient(145deg, #00ADEF, #00C48C);
-  --wm: url('https://assets.fin2pay.fi/LOGO.jpg'); /* واترمارک: لوگوی اصلی */
+  --card-grad:linear-gradient(145deg,rgba(0,173,239,.25),rgba(0,196,140,.30));
+  --hover-grad:linear-gradient(145deg,#00ADEF,#00C48C);
 }
 
-*{ box-sizing:border-box }
+*{box-sizing:border-box}
 
 body{
   font-family:'Segoe UI', Tahoma, sans-serif;
@@ -23,13 +22,13 @@ body{
 
 /* ---------- Header ---------- */
 header, .sub-header{
-  background: linear-gradient(90deg, var(--brand-aqua), var(--brand-green));
+  background:linear-gradient(90deg,var(--brand-aqua),var(--brand-green));
   color:#fff; text-align:center;
   padding:35px 15px 22px;
   box-shadow:0 2px 10px rgba(0,0,0,.15);
 }
-header h1{ margin:0; font-size:2.2em }
-header p{ margin-top:8px; font-size:1em; opacity:.95 }
+header h1{margin:0;font-size:2.2em}
+header p{margin-top:8px;font-size:1em;opacity:.95}
 
 /* ---------- Single-row Card Rail (horizontal scroll) ---------- */
 .grid{
@@ -40,22 +39,19 @@ header p{ margin-top:8px; font-size:1em; opacity:.95 }
   overflow-x:auto;
   scroll-snap-type:x mandatory;
 }
-.grid::-webkit-scrollbar{ height:10px }
-.grid::-webkit-scrollbar-track{ background:transparent }
+.grid::-webkit-scrollbar{height:10px}
+.grid::-webkit-scrollbar-track{background:transparent}
 .grid::-webkit-scrollbar-thumb{
-  background:linear-gradient(90deg, var(--brand-aqua), var(--brand-green));
+  background:linear-gradient(90deg,var(--brand-aqua),var(--brand-green));
   border-radius:6px;
 }
 
-/* ---------- Cards (کوچک‌تر) ---------- */
+/* ---------- Cards (کم‌ارتفاع و باریک‌تر) ---------- */
 .card{
-  /* عرض منعطف (جمع‌وجورتر) */
-  flex: 0 0 clamp(110px, 13vw, 160px);
-
-  /* ارتفاع فلت‌تر */
-  aspect-ratio: 25 / 8;
-
+  flex:0 0 clamp(110px, 13vw, 160px);   /* ~40% باریک‌تر نسبت به قبل */
+  aspect-ratio:25 / 8;                  /* ~60% کوتاه‌تر */
   scroll-snap-align:start;
+
   background:var(--card-grad);
   border:1px solid rgba(0,173,239,.30);
   border-radius:14px;
@@ -72,41 +68,42 @@ header p{ margin-top:8px; font-size:1em; opacity:.95 }
   box-shadow:0 6px 16px rgba(0,0,0,.20);
 }
 
-/* ---------- Logo under cards (لوگوی قابل‌مشاهده) ---------- */
-.logo-section{ text-align:center; margin:34px 0 12px }
-.logo-section img{
-  width:230px; max-width:46vw; height:auto; opacity:.98;
-}
-
-/* ---------- Watermark ONLY on sub pages ---------- */
-body.with-watermark::before{
-  content:""; position:fixed; inset:0;
-  background: var(--wm) no-repeat center 58% / 720px;
+/* ---------- Watermarks ---------- */
+/* واترمارک پیش‌فرض برای صفحه‌ی اصلی (بدون کلاس with-watermark) */
+body:not(.with-watermark)::before{
+  content:"";
+  position:fixed; inset:0;
+  background:url('LOGO.jpg') no-repeat center 60% / 820px;
   opacity:.10; pointer-events:none;
 }
-@media (min-width:1400px){ body.with-watermark::before{ background-size:820px } }
-@media (max-width:992px){  body.with-watermark::before{ background-size:60vw } }
-@media (max-width:576px){  body.with-watermark::before{ background-size:68vw } }
+
+/* واترمارک در صفحات پوشه‌ها */
+body.with-watermark::before{
+  content:"";
+  position:fixed; inset:0;
+  background:url('../LOGO.jpg') no-repeat center 60% / 820px;
+  opacity:.10; pointer-events:none;
+}
 
 /* ---------- Folder Tables ---------- */
-.table-area{ margin:46px auto 0; width:88%; max-width:900px }
+.table-area{margin:46px auto 0; width:88%; max-width:900px}
 table{
   width:100%; border-collapse:collapse;
   background:rgba(0,173,239,.05);
   border-radius:12px; overflow:hidden;
-  box-shadow:0 4px 12px rgba(0,0,0,.10)
+  box-shadow:0 4px 12px rgba(0,0,0,.10);
 }
-th,td{ padding:14px 18px; border-bottom:1px solid rgba(0,0,0,.05) }
+th,td{padding:14px 18px; border-bottom:1px solid rgba(0,0,0,.05)}
 th{
-  background:linear-gradient(90deg, var(--brand-aqua), var(--brand-green));
-  color:#fff; text-align:left; font-weight:600
+  background:linear-gradient(90deg,var(--brand-aqua),var(--brand-green));
+  color:#fff; text-align:left; font-weight:600;
 }
-td{ color:#003a55 }
-tr:hover td{ background:rgba(0,173,239,.10) }
+td{color:#003a55}
+tr:hover td{background:rgba(0,173,239,.10)}
 
 /* ---------- Links ---------- */
-a{ color:var(--brand-aqua); text-decoration:none }
-a:hover{ color:var(--brand-green); text-decoration:underline }
+a{color:var(--brand-aqua); text-decoration:none}
+a:hover{color:var(--brand-green); text-decoration:underline}
 
 /* ---------- Footer ---------- */
 footer{
